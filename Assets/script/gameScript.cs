@@ -212,7 +212,7 @@ public class gameScript : MonoBehaviour
         switch(id) {
             case "1a":
                 int.TryParse(p1AttackInput.text, out int velikost);
-                if(velikost <= 30) {
+                if(velikost <= 30 && velikost > 0) {
                     attack(1, velikost);
                     p1AttackUpozorneni.text = "";
                     closeForm();
@@ -225,7 +225,7 @@ public class gameScript : MonoBehaviour
                 break;
             case "2a":
                 int.TryParse(p2AttackInput.text, out int velikost2);
-                if(velikost2 <= 30) {
+                if(velikost2 <= 30 && velikost2 > 0) {
                     attack(2, velikost2);
                     p2AttackUpozorneni.text = "";
                     closeForm();
