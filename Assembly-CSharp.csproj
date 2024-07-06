@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\script\player1Script.cs" />
+    <Compile Include="Assets\script\hintMan.cs" />
     <Compile Include="Assets\script\vysvetlivkyMan.cs" />
     <Compile Include="Assets\script\endGameManager.cs" />
     <Compile Include="Assets\script\startGameButton.cs" />

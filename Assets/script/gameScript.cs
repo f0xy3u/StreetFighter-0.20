@@ -331,10 +331,10 @@ public class gameScript : MonoBehaviour
         p2VitSatusNum.text = Convert.ToString(math.ceil(player2Vit));
 
         //Endgame checker
-        if (player1Hp < 0) {
+        if (player1Hp <= 0) {
             PlayerPrefs.SetInt("idWon", 2);
             SceneManager.LoadScene("endGame");
-        } else if (player2Hp < 0) {
+        } else if (player2Hp <= 0) {
             PlayerPrefs.SetInt("idWon", 1);
             SceneManager.LoadScene("endGame");
         }

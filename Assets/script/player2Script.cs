@@ -27,14 +27,17 @@ public class player2Script : MonoBehaviour
     public void getPlayerHp() {
         zdraviUpozorneni.text = "";
         float.TryParse(inputHp.text, out float zivot);
-        if(zivot <= 100) {
+        if(zivot <= 100 && zivot >= 20) {
             PlayerPrefs.SetFloat("player2Hp", zivot);
         } else if (string.IsNullOrEmpty(inputHp.text)) {
             PlayerPrefs.SetFloat("player2Hp", 0);
             zdraviUpozorneni.text = "";
-        } else {
+        } else if (zivot > 100){
             PlayerPrefs.SetFloat("player2Hp", 0);
             zdraviUpozorneni.text = "Max. počet životů je 100!";
+        } else {
+            PlayerPrefs.SetFloat("player2Hp", 0);
+            zdraviUpozorneni.text = "Min. počet životů je 20!";
         }
     }
 
@@ -46,9 +49,12 @@ public class player2Script : MonoBehaviour
         } else if(string.IsNullOrEmpty(inputVit.text)) {
             PlayerPrefs.SetFloat("player2Vit", 0);
             staminaUozorneni.text = "";
-        } else{
+        } else if (stamina > 80){
             PlayerPrefs.SetFloat("player2Vit", 0);
-            staminaUozorneni.text = "Max. počet staminy je 80!";
+            zdraviUpozorneni.text = "Max. počet staminy je 80!";
+        } else {
+            PlayerPrefs.SetFloat("player2Vit", 0);
+            zdraviUpozorneni.text = "Min. počet staminy je 20!";
         }
     }
 
