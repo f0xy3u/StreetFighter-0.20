@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "StreetFighter 0.20.sln"
+    "dotnet.defaultSolution": "StreetFighter 0.20.sln",
+    "git.ignoreLimitWarning": true
 }

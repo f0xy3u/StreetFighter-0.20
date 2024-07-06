@@ -56,6 +56,8 @@ public class gameScript : MonoBehaviour
     int p1ReviveAbility = 5;
     int p2ReviveAbility = 5;
 
+    bool p1Skipped = false;
+    bool p2Skipped = false;
     bool p1Played = false;
     bool p2Played = false;
     bool roundComplete = false;
@@ -68,11 +70,13 @@ public class gameScript : MonoBehaviour
                 player2Hp -= math.ceil(dmg * (player1Vit / 100));
                 Debug.Log(staminaCalc(dmg));
                 player1Vit -= staminaCalc(dmg);
+                p1AttackUpozorneni.text = "Nemáš dostatek staminy!";
                 break;
             case 2:
                 player1Hp -=math.ceil(dmg * (player2Vit / 100));
                 Debug.Log(staminaCalc(dmg));
                 player2Vit -= staminaCalc(dmg);
+                p2AttackUpozorneni.text = "Nemáš dostatek staminy!";
                 break;
         }
     }
@@ -163,11 +167,11 @@ public class gameScript : MonoBehaviour
             case <=0:
                 return(0);
             case <=10:
-                return(3);
+                return(6);
             case <=20:
-                return(5);
-            case <=30:
                 return(8);
+            case <=30:
+                return(18);
             default:
                 return(0);
         }
@@ -201,7 +205,7 @@ public class gameScript : MonoBehaviour
         p1Played = true;
     }
 
-    public void p2Btnoff() {
+    public void p2BtnOff() {
         p2AttackButton.interactable = false;
         p2OziveniButton.interactable = false;
         p2SkipButton.interactable = false;
@@ -213,10 +217,14 @@ public class gameScript : MonoBehaviour
             case "1a":
                 int.TryParse(p1AttackInput.text, out int velikost);
                 if(velikost <= 30 && velikost > 0) {
-                    attack(1, velikost);
-                    p1AttackUpozorneni.text = "";
-                    closeForm();
-                    p1BtnOff();
+                    if (player1Vit > staminaCalc(velikost)) {
+                        attack(1, velikost);
+                        p1AttackUpozorneni.text = "";
+                        closeForm();
+                        p1BtnOff();
+                    } else {
+                        p1AttackUpozorneni.text = "Nemáš dostatek staminy!";
+                    }
                 } else if (velikost > 30) {
                     p1AttackUpozorneni.text = "Můžeš max. 30!";
                 } else {
@@ -226,10 +234,14 @@ public class gameScript : MonoBehaviour
             case "2a":
                 int.TryParse(p2AttackInput.text, out int velikost2);
                 if(velikost2 <= 30 && velikost2 > 0) {
-                    attack(2, velikost2);
-                    p2AttackUpozorneni.text = "";
-                    closeForm();
-                    p2Btnoff();
+                    if (player2Vit > staminaCalc(velikost2)) {
+                        attack(2, velikost2);
+                        p2AttackUpozorneni.text = "";
+                        closeForm();
+                        p2BtnOff();
+                    } else {
+                        p2AttackUpozorneni.text = "Nemáš dostatek staminy!";
+                    }
                 } else if (velikost2 > 30) {
                     p2AttackUpozorneni.text = "Můžeš max. 30!";
                 } else {
@@ -244,7 +256,7 @@ public class gameScript : MonoBehaviour
             case "2u":
                 int.TryParse(p2OziveniInput.text, out int velikost4);
                 revive(2, velikost4);
-                p2Btnoff();
+                p2BtnOff();
                 break;
         }
     }
@@ -263,6 +275,7 @@ public class gameScript : MonoBehaviour
                 p1OziveniButton.interactable = false;
                 p1SkipButton.interactable = false;
                 p1Played = true;
+                p1Skipped = true;
                 closeForm();
                 break;
             case 2:
@@ -270,6 +283,7 @@ public class gameScript : MonoBehaviour
                 p2OziveniButton.interactable = false;
                 p2SkipButton.interactable = false;
                 p2Played = true;
+                p2Skipped = true;
                 closeForm();
                 break;
         }
@@ -346,8 +360,19 @@ public class gameScript : MonoBehaviour
             roundComplete = true;
         }
         if (roundComplete == true) {
-            float p1Add = PlayerPrefs.GetFloat("player1Vit") / 20;
-            float p2Add = PlayerPrefs.GetFloat("player2Vit") / 20;
+            float p1Add;
+            float p2Add;
+            if (p1Skipped == false) {
+                p1Add = PlayerPrefs.GetFloat("player1Vit") / 20;
+            } else {
+                p1Add = PlayerPrefs.GetFloat("player1Vit") / 10;
+            }
+            if (p2Skipped == false) {
+                p2Add = PlayerPrefs.GetFloat("player1Vit") / 20;
+            } else {
+                p2Add = PlayerPrefs.GetFloat("player1Vit") / 10;
+            }
+
             if (player1Vit + p1Add < PlayerPrefs.GetFloat("player1Vit")) {
                 player1Vit += p1Add;
             } else {
